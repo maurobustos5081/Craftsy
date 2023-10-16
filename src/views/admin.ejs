@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/head',{ title : 'ADMIN' }) %>
+
+    <body class="home">
+        <%- include('partials/header') %>
+            <main class="container">
+                <div class="row mt-5">
+                    <div class="col-12 col-md-10  mx-auto">
+                        <div class="card">
+                            <div class="card-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                      <li class="breadcrumb-item"><a class="text-primary text-decoration-underline" href="/admin">Productos</a></li>
+                                    </ol>
+                                  </nav>                            </div>
+                            <div class="card-body">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                                            aria-selected="true">Productos</button>
+                                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-profile" type="button" role="tab"
+                                            aria-controls="nav-profile" aria-selected="false">Marcas</button>
+                                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-contact" type="button" role="tab"
+                                            aria-controls="nav-contact" aria-selected="false">Tutoriales</button>
+                                        <button class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-disabled" type="button" role="tab"
+                                            aria-controls="nav-disabled" aria-selected="false"
+                                            disabled>Disabled</button>
+                                    </div>
+                                </nav>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active " id="nav-home" role="tabpanel"
+                                        aria-labelledby="nav-home-tab" tabindex="0">
+                                        <div class="d-flex flex-column gap-2 flex-md-row justify-content-between my-3">
+                                            <a href="/products/add" class="btn btn-dark"><i class="fas fa-plus"></i>
+                                                Agregar</a>
+                                            <form action="/products/filter"
+                                                class="d-flex flex-column flex-md-row  gap-2" method="GET">
+                                                <select class="form-select" name="brand">
+                                                    <% if (locals.brand) { %>
+                                                        <% brands.forEach(item => { %>                                                        
+                                                            <option <%= +brand === item.id && 'selected' %>  value="<%= item.id %>"><%= item.name %></option>
+                                                        <% }) %>
+                                                    <% }else{ %>
+                                                    <option selected hidden>Filtrar por marca</option>
+                                                    <% brands.forEach(brand => { %>                                                        
+                                                        <option value="<%= brand.id %>"><%= brand.name %></option>
+                                                    <% }) %>
+                                                    <% } %>
+                                                </select>
+                                                <button type="submit" class="btn btn-dark">
+                                                    Filtrar
+                                                </button>
+                                            </form>
+                                            <form action="/products/search" class="d-flex flex-column flex-md-row  gap-2" method="GET">
+                                                <input type="text" class="form-control" placeholder="Buscar..."
+                                                    name="keyword">
+                                                <button type="submit" class="btn btn-dark">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped ">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Nombre</th>
+                                                        <th scope="col">Marca</th>
+                                                        <th scope="col">Sección</th>
+                                                        <th scope="col">Precio</th>
+                                                        <th scope="col">Descuento</th>
+                                                        <th scope="col">P. Final</th>
+                                                        <th scope="col">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% products.forEach(({id, name, brand, section, price, discount, images, image,
+                                                        description},index)=> { %>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <%= index + 1 %>
+                                                            </th>
+                                                            <td>
+                                                                <%= name %>
+                                                            </td>
+                                                            <td>
+                                                                <%= brand.name %>
+                                                            </td>
+                                                            <td>
+                                                                <%= section.name %>
+                                                            </td>
+                                                            <td>
+                                                                <%= price %>
+                                                            </td>
+                                                            <td>
+                                                                <%= discount %>
+                                                            </td>
+                                                            <td>
+                                                                <%= price - (discount * price / 100) %>
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex gap-2">
+
+                                                                    <button type="button"
+                                                                        class="btn btn-sm  btn-primary"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modalDetail<%= id %>">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button>
+
+                                                                    <%- include('partials/modalProductDetail',{ id,
+                                                                        name, price, discount, description, images, image })%>
+
+                                                                        <a href="/products/edit/<%= id %>"
+                                                                            class="btn btn-sm btn-success">
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </a>
+
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-danger"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#modalDelete<%=id%>">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+
+                                                                        <div class="modal fade" id="modalDelete<%=id%>"
+                                                                            tabindex="-1"
+                                                                            aria-labelledby="modalDeleteLabel"
+                                                                            aria-hidden="true">
+                                                                            <div class="modal-dialog">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title"
+                                                                                            id="modalDeleteLabel">
+                                                                                            Advertencia
+                                                                                        </h5>
+                                                                                        <button type="button"
+                                                                                            class="btn-close"
+                                                                                            data-bs-dismiss="modal"
+                                                                                            aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <p>¿Estás seguro que querés
+                                                                                            eliminar el producto <b>
+                                                                                                <%= name %>
+                                                                                            </b>?</p>
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-secondary"
+                                                                                            data-bs-dismiss="modal">Cancelar</button>
+                                                                                        <form
+                                                                                            action="/products/remove/<%=id%>?_method=DELETE"
+                                                                                            method="POST">
+                                                                                            <button type="submit"
+                                                                                                class="btn btn-danger">Eliminalo</button>
+                                                                                        </form>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <% }) %>
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                                        aria-labelledby="nav-profile-tab" tabindex="0">
+                                        todas las marcas
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                                        aria-labelledby="nav-contact-tab" tabindex="0">
+                                        todos los tutoriales
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-disabled" role="tabpanel"
+                                        aria-labelledby="nav-disabled-tab" tabindex="0">...</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+                crossorigin="anonymous"></script>
+
+    </body>
+
+</html>

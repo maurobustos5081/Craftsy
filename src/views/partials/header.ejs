@@ -1,0 +1,26 @@
+<header class="home__header">
+    <div class="home__header--top">
+        <a href="/"><img src="/images/logo.png" alt=""></a>
+        <button class="home__header--bars">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+    </div>
+    <nav class="home__header--menu">
+        <ul>
+            <li><a href="">Categorias</a></li>
+        </ul>
+        <ul>
+            <% if (!locals.userLogin) { %>
+                <li><a href="/users/login">login</a></li>
+                <li><a href="/users/register">registro</a></li>
+            <% }else{ %>
+                <% if (userLogin.rol === 1) { %>
+                    <li><a href="/admin">admin</a></li>
+                <% } %>
+                <li><a href="/users/profile">Hola <%= userLogin.name %>!</a></li>
+                <li><a href="/users/logout">Salir</a></li>
+            <% } %>
+
+        </ul>
+    </nav>
+</header>

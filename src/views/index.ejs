@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/head',{
+    title : 'HOME'
+}) %>
+
+<body class="home">
+    <%- include('partials/header') %>
+
+    <div class="home__banner">
+        <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+                    aria-label="Slide 4"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active home__banner--box-image" style="
+              background-image: url('/images/banner/banner_1.jpg');
+              ">
+                </div>
+                <div class="carousel-item home__banner--box-image" style="
+              background-image: url('/images/banner/banner_2.jpg');
+              ">
+                </div>
+                <div class="carousel-item home__banner--box-image" style="
+              background-image: url('/images/banner/banner_3.jpg');
+              ">
+                </div>
+                <div class="carousel-item home__banner--box-image" style="
+              background-image: url('/images/banner/banner_4.jpg');
+              ">
+                </div>
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+
+        <main class="col-12 col-md-8">
+
+            <% sections.forEach(section => { %>
+                <h3 class="mt-5"><%= section.name.toUpperCase() %></h3>
+                <hr>
+                <section class="row">
+                <% section.products.forEach(product => { %>
+                      <%- include('./partials/cardProduct', {
+                        product
+                      }) %>
+                   
+                <% }) %>
+                </section>
+            <% }) %>
+
+          
+        </main>
+
+        <aside class="col-12 col-md-4">
+            <section class="home__aside__section">
+                <h3>Tutoriales</h3>
+                <% tutorials.forEach(tutorial => { %>
+                    <article class="home__aside__section__article">
+                        <img src="/images/<%= tutorial.image %>" alt="Imagen tutorial 1">
+                        <div class="home__aside__section__article--name">
+                            <h5><%= tutorial.name %></h5>
+                            <span><%= tutorial.message %></span>
+                        </div>
+                    </article>
+
+                <% }) %>
+               
+              
+            </section>
+            <section class="home__aside__section">
+                <h3>Publicidad</h3>
+                <div class="home__aside__section--ads">
+                    <img src="/images/ad-01.jpg" alt="imagen publicidad 1">
+                    <img src="/images/ad-02.jpg" alt="imagen publicidad 2">
+                </div>
+            </section>
+        </aside>
+    </div>
+    <div class="home__carousel">
+        <div class="glider-contain" >
+            <div class="glider">
+               
+
+                   
+              
+            </div>
+
+            <button aria-label="Previous" class="glider-prev">«</button>
+            <button aria-label="Next" class="glider-next">»</button>
+            <div role="tablist" class="dots"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="/javascripts/glider.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            new Glider(document.querySelector(".glider"), {
+                slidesToShow: 1,
+                dots: '.dots',
+                arrows: {
+                    prev: '.glider-prev',
+                    next: '.glider-next'
+                },
+                draggable: true,
+                responsive: [
+                    {
+                        // screens greater than >= 775px
+                        breakpoint: 768,
+                        settings: {
+                            // Set to `auto` and provide item width to adjust to viewport
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                            duration: 0.25,
+                            /* itemWidth: 150, */
+
+                        }
+                    }, {
+                        // screens greater than >= 1024px
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 1,
+                            duration: 0.25,
+                            
+
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+</body>
+
+</html>

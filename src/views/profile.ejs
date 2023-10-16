@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head',{
+        title : 'PROFILE'
+    }) %>
+
+<body class="register">
+    <%- include('partials/header') %>
+
+    <main class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-8 mx-auto">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <h3>Mi perfil</h3>
+                    <hr>
+                    <form class="row" action="/users/update-profile?_method=PUT" method="POST">
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-label" for="name">Nombre</label>
+                            <input class="form-control" type="text" id="name" name="name" value="<%= name %>">
+                            <small class="ms-2 text-danger"><%= locals.errors && (errors.name && errors.name.msg) %></small>
+
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-label" for="surname">Apellido</label>
+                            <input class="form-control" type="text" id="surname" name="surname" value="<%= surname %>">
+                            <small class="ms-2 text-danger"><%= locals.errors && (errors.surname && errors.surname.msg) %></small>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-label" for="birthday">Cumpleaños</label>
+                            <input class="form-control" type="date" id="birthday" name="birthday" value="<%= birthday %>">
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-label" for="gender">Género</label>
+                            <select class="form-select" name="gender" id="gender">
+                                <option value="hombre" <%= gender === "hombre" && 'selected' %>>Hombre</option>
+                                <option value="mujer" <%= gender === "mujer" && 'selected' %>>Mujer</option>
+                                <option value="prefiero no decirlo" <%= gender === "prefiero no decirlo" && 'selected' %>>Prefiero no decirlo</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="address">Domicilio</label>
+                                    <input type="text" class="form-control" name="address">
+                                </div>
+                                <div class="col-12 mb-3">
+                                  <label for="province">Provincia</label>
+                                    <select id="province" class="form-control" name="province">
+                                      <option selected hidden>Elija la provincia...</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                  <label for="city">Localidad</label>
+                                    <select id="city" class="form-control" name="city">
+                                      <option selected hidden>Elija la localidad...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-check-label" for="about">
+                                Acerca de mí
+                              </label>
+                            <textarea style="resize: none;" name="about" id="about" rows="5" class="form-control"><%= about %></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-dark">Registrate</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
